@@ -28,12 +28,18 @@ def telegram2 ():
         file_path = file_response.get('result').get('file_path')
         file_url = f'https://api.telegram.org/file/bot{token}/{file_path}'
         image = requests.get(file_url, stream=True).raw.read()
+
+        
         naver_url = 'https://openapi.naver.com/v1/vision/celebrity'
         response = requests.post(naver_url, headers = headers, files = {'image': image}).json()
-        best = response.get('faces')[0].get('celebrity')
-        confidence = best.get('confidence')
-        value = best.get('value')
-        text = f'{confidence}만큼 {value}를 닮으셨습니다.'       
+        if response.get('faces'):
+            best = response.get('faces')[0].get('celebrity')
+            confidence = best.get('confidence')
+            value = best.get('value')
+            text = f'{confidence}만큼 {value}를 닮으셨습니다.'
+        else:
+            text = '사람 아니네'
+               
         api_url = f'{url}/sendMessage?chat_id={chat_id}&text= {text}'
         requests.get(api_url)
 
