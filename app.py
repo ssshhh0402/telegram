@@ -43,7 +43,7 @@ def telegram2 ():
         api_url = f'{url}/sendMessage?chat_id={chat_id}&text= {text}'
         requests.get(api_url)
 
-    elif response.get('message').get('text'):
+    elif response.get('message').get('text'):   
     
         if '/번역 '== text[0:4] in text :
             data = {'source' : 'ko', 'target': 'en', 'text':text[4:] }
@@ -65,4 +65,6 @@ def telegram2 ():
 
 
 if __name__ == '__main__':
+    import os
+    port = int(os.environ.get("PORT", 5000))
     app.run(host = '0.0.0.0', debug = True)
